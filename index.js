@@ -3,25 +3,32 @@ const express = require('express')
 //Create a new instance of express
 const app = express()
 
+//const hello= require('./routes/hello');
+//app.use('/hello', hello);
+
+
 //let middleware = require('./utilities/middleware')
 
 const bodyParser = require("body-parser");
 //This allows parsing of the body of POST requests, that are encoded in JSON
 app.use(bodyParser.json())
 
-//Obtain a Pool of DB connections. 
-const { Pool } = require('pg')
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    }
-})
+// USING ROUTES 
+app.use('/auth', require('./routes/register'));
+app.use('/hello', require('./routes/hello'));
+app.use('/demosql', require('./routes/demosql'));
 
-
-
-
-
+// app
+// .route('/hello/adam')
+// .get((request, respond)=>{})
+// .post((request, respond)=>{})
+app.get("/wait", (request, response)=>{
+    setTimeout(()=>{
+        response.send({
+            message:"Thanks for waiting"
+        });
+    }, 5000)
+});
 /*
  * This middleware function will respond to inproperly formed JSON in 
  * request parameters.
