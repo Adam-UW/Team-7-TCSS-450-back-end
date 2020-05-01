@@ -1,9 +1,9 @@
 define({
-  "name": "Lab 4",
+  "name": "Mobile App Project Group-7",
   "version": "0.1.0",
-  "description": "The Lab 4 API Documentation",
-  "title": "Lab 4 API Doc",
-  "url": "https://cfb3-lab4-backend-2020sp.herokuapp.com",
+  "description": "Mobile App Group-7  API Documentation",
+  "title": "Mobile App Project Group-7 API Doc",
+  "url": "https://mobile-app-spring-2020.herokuapp.com",
   "order": [
     "Hello",
     "Params",
