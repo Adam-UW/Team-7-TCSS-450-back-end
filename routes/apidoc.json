@@ -1,9 +1,9 @@
 {
     "name": "Lab 4",
     "version": "0.1.0",
-    "description": "The Lab 4 API Documentation",
-    "title": "Lab 4 API Doc",
-    "url" : "https://cfb3-lab4-backend-2020sp.herokuapp.com",
+    "description": "Mobile App project Group 7",
+    "title": "The Project API Documentation",
+    "url" : "https://mobile-app-spring-2020.herokuapp.com",
     "order": [
       "Hello",
       "Params",
