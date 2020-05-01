@@ -3,7 +3,6 @@ const express = require('express')
 //Create a new instance of express
 const app = express()
 
-app.use("/doc", express.static('apidoc'))
 
 //const hello= require('./routes/hello');
 //app.use('/hello', hello);
@@ -57,6 +56,10 @@ app.get("/", (request, response) => {
     }
     response.end(); //end the response
 });
+
+
+// FOR API
+app.use("/doc", express.static('apidoc'))
 
 /*
  * Serve the API documentation genertated by apidoc as HTML. 
