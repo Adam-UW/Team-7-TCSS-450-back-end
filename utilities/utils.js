@@ -1,6 +1,21 @@
 //Get the connection to Heroku Database
 let pool = require('./sql_conn.js')
+const nodemailer = require('nodemailer');
 
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  port: 25,
+  secure: false,
+  auth:{
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
+  },
+  tls:{
+      rejectUnauthorized: false
+  }
+
+});
 
 
 
@@ -16,7 +31,25 @@ function sendEmail(from, receiver, subj, message) {
   //similar to the DATABASE_URL and PHISH_DOT_NET_KEY (later section of the lab)
 
   //fake sending an email for now. Post a message to logs. 
-  console.log('Email sent: ' + message);
+  //console.log('Email sent: ' + message);
+
+  let HelperOption={
+    from: from,
+    to: receiver,
+    subject: subj,
+    text: message
+  }
+
+  transporter.sendMail(HelperOption, (err, info)=>{
+    if(err){
+      console.log("error has occured"+ err);
+    }else {
+      console.log('email has sent...');
+    }
+
+  });
+
+  
 }
 
 /**

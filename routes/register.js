@@ -17,6 +17,8 @@ const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
 
+ 
+
 /**
  * @api {post} /register Request to resgister a user
  * @apiName PostAuth
@@ -67,7 +69,7 @@ router.post('/', (req, res) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail("uwnetid@uw.edu", email, "Welcome!", "<strong>Welcome to our app!</strong>");
+                sendEmail(process.env.EMAIL, email, "Welcome!", "<strong>Welcome to our app!</strong>");
             })
             .catch((err) => {
                 //log the error
