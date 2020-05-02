@@ -3,6 +3,8 @@ const express = require('express')
 //Create a new instance of express
 const app = express()
 
+const nodemailer = require('nodemailer')
+
 
 //const hello= require('./routes/hello');
 //app.use('/hello', hello);
@@ -16,8 +18,10 @@ app.use(bodyParser.json())
 
 // USING ROUTES 
 app.use('/auth', require('./routes/register'));
+app.use('/auth', require('./routes/login'));
 app.use('/hello', require('./routes/hello'));
 app.use('/demosql', require('./routes/demosql'));
+
 
 // app
 // .route('/hello/adam')
