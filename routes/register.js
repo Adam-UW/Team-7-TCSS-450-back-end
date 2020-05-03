@@ -25,8 +25,8 @@ router.use(bodyParser.json())
  * @apiGroup Auth
  * 
  * @apiParam {String} first a users first name
- * @apiParam {String} last a users last name
- * @apiParam {String} User Name a user nickname
+ * @apiParam {String} last  a users last name
+ * @apiParam {String} User  a user nickname
  * @apiParam {String} email a users email *required unique
  * @apiParam {String} password a users password
  * 
@@ -54,8 +54,6 @@ router.post('/', (req, res) => {
     //In js, empty strings or null values evaluate to false
     if(first && last && username && email && password) {
         //We're storing salted hashes to make our application more secure
-        //If you're interested as to what that is, and why we should use it
-        //watch this youtube video: https://www.youtube.com/watch?v=8ZtInClXe1Q
         let salt = crypto.randomBytes(32).toString("hex")
         let salted_hash = getHash(password, salt)
         

@@ -1,7 +1,7 @@
 define({ "api": [
   {
     "type": "get",
-    "url": "/login",
+    "url": "/auth",
     "title": "Request to sign a user in the system",
     "name": "GetAuth",
     "group": "Auth",
@@ -91,7 +91,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/Auth",
+    "url": "/auth",
     "title": "Request to resgister a user",
     "name": "PostAuth",
     "group": "Auth",

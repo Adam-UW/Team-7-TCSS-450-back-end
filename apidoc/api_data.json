@@ -91,7 +91,7 @@
   },
   {
     "type": "post",
-    "url": "/Auth",
+    "url": "/auth",
     "title": "Request to resgister a user",
     "name": "PostAuth",
     "group": "Auth",

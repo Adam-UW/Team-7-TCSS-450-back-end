@@ -6,7 +6,6 @@ define({
   "url": "https://mobile-app-spring-2020.herokuapp.com",
   "order": [
     "Hello",
-    "Params",
     "Wait",
     "DemoSql",
     "Auth",

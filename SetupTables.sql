@@ -63,3 +63,7 @@ CREATE TABLE Push_Token (KeyID SERIAL PRIMARY KEY,
                         Token VARCHAR(255),
                         FOREIGN KEY(MemberID) REFERENCES Members(MemberID)
 );
+
+-- ALTER SEQUENCE Members_memberid_seq RESTART; // USE IT TO RESET SERIAL 
+--SELECT * FROM Members;
+-- DELETE FROM Members WHERE memberid=1;
