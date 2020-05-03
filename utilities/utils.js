@@ -3,10 +3,11 @@ let pool = require('./sql_conn.js')
 const nodemailer = require('nodemailer');
 
 
+// Transporter for the Email server
 let transporter = nodemailer.createTransport({
   service: 'gmail',
-  port: 25,
-  secure: false,
+  port: 25, 
+  secure: false, // Since not 465
   auth:{
     user: process.env.EMAIL,
     pass: process.env.PASSWORD
@@ -22,34 +23,31 @@ let transporter = nodemailer.createTransport({
 //We use this create the SHA256 hash
 const crypto = require("crypto");
 
+/**
+ * 
+ * @param {email} from     a sender email
+ * @param {email} receiver a receiver email
+ * @param {string} subj    a subject email
+ * @param {string} message a message container 
+ */
 function sendEmail(from, receiver, subj, message) {
-  //research nodemailer for sending email from node.
-  // https://nodemailer.com/about/
-  // https://www.w3schools.com/nodejs/nodejs_email.asp
-  //create a burner gmail account 
-  //make sure you add the password to the environmental variables
-  //similar to the DATABASE_URL and PHISH_DOT_NET_KEY (later section of the lab)
-
-  //fake sending an email for now. Post a message to logs. 
-  //console.log('Email sent: ' + message);
-
   let HelperOption={
     from: from,
     to: receiver,
     subject: subj,
-    text: message
+   // text: message
+   html: message
   }
 
   transporter.sendMail(HelperOption, (err, info)=>{
     if(err){
-      console.log("error has occured"+ err);
+      console.log("error has occured and can not verify your registeration "+ err);
     }else {
-      console.log('email has sent...');
+      console.log('Verification email has sent...' + HelperOption.message);
     }
 
   });
 
-  
 }
 
 /**

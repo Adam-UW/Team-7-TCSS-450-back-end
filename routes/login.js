@@ -19,7 +19,7 @@ let config = {
 }
 
 /**
- * @api {get} /login Request to sign a user in the system
+ * @api {get} /auth Request to sign a user in the system
  * @apiName GetAuth
  * @apiGroup Auth
  * 

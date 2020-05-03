@@ -20,7 +20,7 @@ router.use(bodyParser.json())
  
 
 /**
- * @api {post} /register Request to resgister a user
+ * @api {post} /Auth Request to resgister a user
  * @apiName PostAuth
  * @apiGroup Auth
  * 
@@ -47,8 +47,8 @@ router.post('/', (req, res) => {
     //Retrieve data from query params
     var first = req.body.first
     var last = req.body.last
-    var username = req.body.username //username not required for lab. Use email
     var email = req.body.email
+    var username = req.body.username
     var password = req.body.password
     //Verify that the caller supplied all the parameters
     //In js, empty strings or null values evaluate to false
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail(process.env.EMAIL, email, "Welcome!", "<strong>Welcome to our app!</strong>");
+                sendEmail(process.env.EMAIL, email, "Welcome!", `<strong>Hi ${last} Welcome to our app!</strong>`);
             })
             .catch((err) => {
                 //log the error
