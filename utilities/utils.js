@@ -2,6 +2,13 @@
 let pool = require('./sql_conn.js')
 const nodemailer = require('nodemailer');
 const sgMail= require('@sendgrid/mail')
+
+
+
+//middleware
+let messaging = require('./pushy_utilities.js')
+
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
@@ -65,5 +72,5 @@ function getHash(pw, salt) {
 }
 
 module.exports = { 
-    pool, getHash, sendEmail
+    pool, getHash, sendEmail, messaging
 };

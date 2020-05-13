@@ -68,7 +68,6 @@ router.get('/', (request, response) => {
                 if (ourSaltedHash === theirSaltedHash ) {
                     //credentials match. get a new JWT
 
-
                     let token = jwt.sign(
                         {
                             email: email,
