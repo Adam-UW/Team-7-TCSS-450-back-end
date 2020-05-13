@@ -1,9 +1,9 @@
 [
   {
-    "type": "get",
-    "url": "/login",
-    "title": "Request to sign a user in the system",
-    "name": "GetAuth",
+    "type": "delete",
+    "url": "/auth",
+    "title": "Request to delete a Pushy Token for the user",
+    "name": "DeleteAuth",
     "group": "Auth",
     "header": {
       "fields": {
@@ -13,7 +13,7 @@
             "type": "String",
             "optional": false,
             "field": "authorization",
-            "description": "<p>&quot;username:password&quot; uses Basic Auth</p>"
+            "description": "<p>Valid JSON Web Token JWT</p>"
           }
         ]
       }
@@ -26,21 +26,7 @@
             "type": "boolean",
             "optional": false,
             "field": "success",
-            "description": "<p>true when the name is found and password matches</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Authentication successful!</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "token",
-            "description": "<p>JSON Web Token</p>"
+            "description": "<p>true when the pushy token is deleted</p>"
           }
         ]
       }
@@ -62,16 +48,16 @@
             "type": "String",
             "optional": false,
             "field": "message",
-            "description": "<p>&quot;User not found&quot;</p>"
+            "description": "<p>&quot;user not found&quot;</p>"
           }
         ],
-        "400: Invalid Credentials": [
+        "400: JSON Error": [
           {
-            "group": "400: Invalid Credentials",
+            "group": "400: JSON Error",
             "type": "String",
             "optional": false,
             "field": "message",
-            "description": "<p>&quot;Credentials did not match&quot;</p>"
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
           }
         ],
         "400: SQL Error": [
@@ -86,12 +72,12 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/login.js",
+    "filename": "routes/pushyregister.js",
     "groupTitle": "Auth"
   },
   {
     "type": "post",
-    "url": "/auth",
+    "url": "/Auth",
     "title": "Request to resgister a user",
     "name": "PostAuth",
     "group": "Auth",
@@ -116,8 +102,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "User",
-            "description": "<p>Name a user nickname</p>"
+            "field": "username",
+            "description": "<p>a user nickname</p>"
           },
           {
             "group": "Parameter",
@@ -198,6 +184,95 @@
     },
     "version": "0.0.0",
     "filename": "routes/register.js",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "put",
+    "url": "/auth",
+    "title": "Request to insert a Pushy Token for the user",
+    "name": "PutAuth",
+    "group": "Auth",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Valid JSON Web Token JWT</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>the Pushy Token of the user identified in the JWT</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true when the pushy token is inserted</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "404: User Not Found": [
+          {
+            "group": "404: User Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;user not found&quot;</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/pushyregister.js",
     "groupTitle": "Auth"
   },
   {
@@ -596,5 +671,95 @@
     "version": "0.0.0",
     "filename": "routes/hello.js",
     "groupTitle": "Hello"
+  },
+  {
+    "type": "get",
+    "url": "/auth",
+    "title": "Request to sign a user in the system",
+    "name": "GetAuth",
+    "group": "auth",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>&quot;username:password&quot; uses Basic Auth</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true when the name is found and password matches</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Authentication successful!</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>JSON Web Token</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "404: User Not Found": [
+          {
+            "group": "404: User Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;User not found&quot;</p>"
+          }
+        ],
+        "400: Invalid Credentials": [
+          {
+            "group": "400: Invalid Credentials",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Credentials did not match&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/login.js",
+    "groupTitle": "auth"
   }
 ]

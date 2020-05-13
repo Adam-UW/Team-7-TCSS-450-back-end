@@ -7,7 +7,7 @@ let pool = require('../utilities/utils').pool
 let getHash = require('../utilities/utils').getHash
 
 var router = express.Router()
-
+require('dotenv').config
 const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
@@ -67,7 +67,13 @@ router.get('/', (request, response) => {
                 //Did our salted hash match their salted hash?
                 if (ourSaltedHash === theirSaltedHash ) {
                     //credentials match. get a new JWT
-                    let token = jwt.sign({username: email},
+
+
+                    let token = jwt.sign(
+                        {
+                            email: email,
+                            memberid: result.rows[0].memberid
+                        },
                         config.secret,
                         { 
                             expiresIn: '14 days' // expires in 24 hours

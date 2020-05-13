@@ -4,7 +4,8 @@
   "description": "TCSS 450 Lab for creating a webservice",
   "main": "index.js",
   "scripts": {
-    "test": "index.js"
+    "test": "index.js",
+    "dev": "nodemon index"
   },
   "keywords": [
     "TCSS450",
@@ -14,6 +15,7 @@
   "author": "TCSS 450",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^7.1.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -23,6 +25,10 @@
     "nodemailer": "^6.4.6",
     "npm": "^6.14.0",
     "pg": "^8.0.2",
-    "pushy": "^2.0.8"
+    "pushy": "^2.0.8",
+    "sendgrid": "^5.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
   }
 }

@@ -6,18 +6,17 @@
   "url": "https://mobile-app-spring-2020.herokuapp.com",
   "order": [
     "Hello",
-    "Wait",
-    "DemoSql",
     "Auth",
-    "Phish"
+    "Phish",
+    "message"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-05-03T04:14:01.978Z",
+    "time": "2020-05-13T04:16:40.386Z",
     "url": "http://apidocjs.com",
-    "version": "0.22.0"
+    "version": "0.22.1"
   }
 }

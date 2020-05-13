@@ -1,6 +1,8 @@
 //Get the connection to Heroku Database
 let pool = require('./sql_conn.js')
 const nodemailer = require('nodemailer');
+const sgMail= require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
 // Transporter for the Email server
@@ -31,6 +33,8 @@ const crypto = require("crypto");
  * @param {string} message a message container 
  */
 function sendEmail(from, receiver, subj, message) {
+
+
   let HelperOption={
     from: from,
     to: receiver,
@@ -43,7 +47,7 @@ function sendEmail(from, receiver, subj, message) {
     if(err){
       console.log("error has occured and can not verify your registeration "+ err);
     }else {
-      console.log('Verification email has sent...' + HelperOption.message);
+      console.log('Verification email has sent...' + HelperOption.html);
     }
 
   });
