@@ -18,9 +18,13 @@ const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
 
+// FOR USER to register
+let first, last, email, username, password;
+let rand, mailOptions, host, link
 
 
- 
+
+
 
 /**
  * @api {post} /Auth Request to resgister a user
@@ -44,65 +48,6 @@ router.use(bodyParser.json())
  * 
  * @apiError (400: SQL Error) {String} message the reported SQL error details
  */ 
-router.post('/dummy', (req, res) => {
-    res.type("application/json")
-
-    //Retrieve data from query params
-    var first = req.body.first
-    var last = req.body.last
-    var email = req.body.email
-    var username = req.body.username
-    var password = req.body.password
-    //Verify that the caller supplied all the parameters
-    //In js, empty strings or null values evaluate to false
-    if(first && last && username && email && password) {
-        //We're storing salted hashes to make our application more secure
-        let salt = crypto.randomBytes(32).toString("hex")
-        let salted_hash = getHash(password, salt)
-        
-        //We're using placeholders ($1, $2, $3) in the SQL query string to avoid SQL Injection
-        //If you want to read more: https://stackoverflow.com/a/8265319
-        let theQuery = "INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING Email"
-        let values = [first, last, username, email, salted_hash, salt]
-        pool.query(theQuery, values)
-            .then(result => {
-                //We successfully added the user, let the user know
-                res.status(201).send({
-                    success: true,
-                    email: result.rows[0].email
-                })
-               // sendEmail(process.env.EMAIL, email, "Welcome!", `<strong>Hi ${last} Welcome to our app!</strong>`);
-            })
-            .catch((err) => {
-                //log the error
-                //console.log(err)
-                if (err.constraint == "members_username_key") {
-                    res.status(400).send({
-                        message: "Username exists"
-                    })
-                } else if (err.constraint == "members_email_key") {
-                    res.status(400).send({
-                        message: "Email exists"
-                    })
-                } else {
-                    res.status(400).send({
-                        message: err.detail
-                    })
-                }
-            })
-    } else {
-        response.status(400).send({
-            message: "Missing required information"
-        })
-    }
-})
-
-
-
-var first, last, email, username, password;
-var rand, mailOptions, host, link
-
-// Test route 
 router.post('/', (req, res, next)=>{
     res.type("application/json")
 
@@ -111,6 +56,7 @@ router.post('/', (req, res, next)=>{
     email=req.body.email
     username=req.body.username
     password=req.body.password
+    console.log(typeof password)
 
         // make sure if the user exist
         let theQuery= "SELECT * FROM Members WHERE Email = $1"
@@ -134,7 +80,7 @@ router.post('/', (req, res, next)=>{
 
 }, (req, res)=>{
     
-    if(first, last, email, username, password){
+    if(first && last && email && username && password){
         rand=Math.floor((Math.random() * 100) +54)
         host=req.get('host')
         link='http://'+host+'/auth/verify?id='+rand
@@ -162,8 +108,7 @@ router.post('/', (req, res, next)=>{
 
 })
 
-//Add a user 
-
+//Email verify  
 router.get('/verify', (req, res)=> {
     console.log(req.protocol+":/"+req.get('host'))
 
@@ -176,9 +121,9 @@ router.get('/verify', (req, res)=> {
             let salted_hash= getHash(password, salt)
 
     let theQuery= 'INSERT INTO MEMBERS (FirstName, LastName, Username, Email, Password, Salt) VALUES($1, $2, $3, $4, $5, $6) RETURNING Email'
-    let  values=[first, last, username, email,salted_hash, salt]
+    let  values=[first, last, username, email, salted_hash, salt]
 
-    if(first, last, username, email, salted_hash, salt){
+    if(first && last && username && email && salted_hash && salt){
 
     console.log(values)
        
@@ -242,3 +187,63 @@ var smtpTransport = nodemailer.createTransport({
 
 
 module.exports = router
+
+
+
+ 
+
+ /* PLEASE DELETE */
+
+/** router.post('/dummy', (req, res) => {
+    res.type("application/json")
+
+    //Retrieve data from query params
+    var first = req.body.first
+    var last = req.body.last
+    var email = req.body.email
+    var username = req.body.username
+    var password = req.body.password
+    //Verify that the caller supplied all the parameters
+    //In js, empty strings or null values evaluate to false
+    if(first && last && username && email && password) {
+        //We're storing salted hashes to make our application more secure
+        let salt = crypto.randomBytes(32).toString("hex")
+        let salted_hash = getHash(password, salt)
+        
+        //We're using placeholders ($1, $2, $3) in the SQL query string to avoid SQL Injection
+        //If you want to read more: https://stackoverflow.com/a/8265319
+        let theQuery = "INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING Email"
+        let values = [first, last, username, email, salted_hash, salt]
+        pool.query(theQuery, values)
+            .then(result => {
+                //We successfully added the user, let the user know
+                res.status(201).send({
+                    success: true,
+                    email: result.rows[0].email
+                })
+               // sendEmail(process.env.EMAIL, email, "Welcome!", `<strong>Hi ${last} Welcome to our app!</strong>`);
+            })
+            .catch((err) => {
+                //log the error
+                //console.log(err)
+                if (err.constraint == "members_username_key") {
+                    res.status(400).send({
+                        message: "Username exists"
+                    })
+                } else if (err.constraint == "members_email_key") {
+                    res.status(400).send({
+                        message: "Email exists"
+                    })
+                } else {
+                    res.status(400).send({
+                        message: err.detail
+                    })
+                }
+            })
+    } else {
+        response.status(400).send({
+            message: "Missing required information"
+        })
+    }
+}) **/  /* @NOTE  DELETE IT */
+

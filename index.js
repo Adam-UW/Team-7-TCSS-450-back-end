@@ -19,6 +19,7 @@ app.use('/auth',     require('./routes/register'));
 app.use('/auth',     require('./routes/login'));
 app.use('/hello',    require('./routes/hello'));
 app.use('/demosql',  require('./routes/demosql'));
+//app.use('/pass',     require('./routes/forget_pass'))
 app.use('/messages', middleware.checkToken,  require('./routes/messages.js'))
 app.use('/chats',    middleware.checkToken,  require('./routes/chats.js'))
 

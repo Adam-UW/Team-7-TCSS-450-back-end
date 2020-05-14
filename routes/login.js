@@ -64,6 +64,12 @@ router.get('/', (request, response) => {
                 //Combined their password with our salt, then hash
                 let theirSaltedHash = getHash(theirPw, salt)
 
+                console.log(theirSaltedHash)
+
+                console.log(ourSaltedHash)
+
+                console.log(salt)
+
                 //Did our salted hash match their salted hash?
                 if (ourSaltedHash === theirSaltedHash ) {
                     //credentials match. get a new JWT
@@ -78,6 +84,8 @@ router.get('/', (request, response) => {
                             expiresIn: '14 days' // expires in 24 hours
                         }
                     )
+
+                   // console.log(token)
                     //package and send the results
                     response.json({
                         success: true,
