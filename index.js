@@ -5,9 +5,10 @@ const app = express()
 
 const nodemailer = require('nodemailer')
 
+//EJS
+app.set('view-engine', 'ejs')
 
-
-//let middleware = require('./utilities/middleware')
+let middleware = require('./utilities/middleware')
 
 const bodyParser = require("body-parser");
 //This allows parsing of the body of POST requests, that are encoded in JSON
