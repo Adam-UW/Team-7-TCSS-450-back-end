@@ -9,30 +9,6 @@ router.use(bodyParser.json())
  
 let pool = require('../utilities/utils').pool
 
-/**
- * @apiDefine JSONError
- * @apiError (400: JSON Error) {String} message "malformed JSON in parameters"
- */ 
-
-/**
- * @api {post} /demosql Request to add someone's name to the DB
- * @apiName PostDemoSql
- * @apiGroup DemoSql
- * 
- * @apiParam {String} name someone's name *unique
- * @apiParam {String} message a message to store with the name
- * 
- * @apiSuccess (Success 201) {boolean} success true when the name is inserted
- * @apiSuccess (Success 201) {String} message the inserted name
- * 
- * @apiError (400: Name exists) {String} message "Name exists"
- * 
- * @apiError (400: Missing Parameters) {String} message "Missing required information"
- * 
- * @apiError (400: SQL Error) {String} message the reported SQL error details
- * 
- * @apiUse JSONError
- */ 
 router.post("/", (request, response) => {
 
     if (request.body.name && request.body.message) {
@@ -67,24 +43,7 @@ router.post("/", (request, response) => {
     }    
 })
 
-/**
- * @api {get} /demosql/:name? Request to get all demo entries in the DB
- * @apiName GetDemoSql
- * @apiGroup DemoSql
- * 
- * @apiParam {String} name (Optional) the name to look up. If no name provided, all names are returned
- * 
- * @apiSuccess {boolean} success true when the name is inserted
- * @apiSuccess {Object[]} names List of names in the Demo DB
- * @apiSuccess {String} names.name The name
- * @apiSuccess {String} names.message The message asscociated with the name
- * 
- * @apiError (404: Name Not Found) {String} message "Name not found"
 
- * @apiError (400: SQL Error) {String} message the reported SQL error details
- * 
- * @apiUse JSONError
- */ 
 router.get("/:name?", (request, response) => {
 
     const theQuery = 'SELECT name, message FROM Demo WHERE name LIKE $1'
@@ -116,25 +75,7 @@ router.get("/:name?", (request, response) => {
         })
 })
 
-/**
- * @api {put} /demosql Request to replace the message entry in the DB for name
- * @apiName PutDemoSql
- * @apiGroup DemoSql
- * 
- * @apiParam {String} name the name entry  
- * @apiParam {String} message a message to replace with the associated name
- * 
- * @apiSuccess {boolean} success true when the name is inserted
- * @apiSuccess {String} message the name of the updated message 
- * 
- * @apiError (404: Name Not Found) {String} message "Name not found"
- * 
- * @apiError (400: Missing Parameters) {String} message "Missing required information"
- * 
- * @apiError (400: SQL Error) {String} message the reported SQL error details
- * 
- * @apiUse JSONError
- */ 
+
 router.put("/", (request, response) => {
 
     if (request.body.name && request.body.message) {
@@ -168,24 +109,7 @@ router.put("/", (request, response) => {
     } 
 })
 
-/**
- * @api {delete} /demosql/:name Request to remove entry in the DB for name
- * @apiName DeleteDemoSql
- * @apiGroup DemoSql
- * 
- * @apiParam {String} name the name entry  to delete
- * 
- * @apiSuccess {boolean} success true when the name is delete
- * @apiSuccess {String} message the name of the deleted entry 
- * 
- * @apiError (404: Name Not Found) {String} message "Name not found"
- * 
- * @apiError (400: Missing Parameters) {String} message "Missing required information"
- * 
- * @apiError (400: SQL Error) {String} message the reported SQL error details
- * 
- * @apiUse JSONError
- */ 
+
 router.delete("/:name", (request, response) => {
 
     if (request.params.name) {
