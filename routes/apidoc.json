@@ -5,9 +5,7 @@
     "title": "The Project API Documentation",
     "url" : "https://mobile-app-spring-2020.herokuapp.com",
     "order": [
-      "Hello",
       "Auth",
-      "Phish",
       "Message"
     ]
   }

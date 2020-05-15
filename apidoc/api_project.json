@@ -5,9 +5,7 @@
   "title": "The Project API Documentation",
   "url": "https://mobile-app-spring-2020.herokuapp.com",
   "order": [
-    "Hello",
     "Auth",
-    "Phish",
     "Message"
   ],
   "sampleUrl": false,
@@ -15,7 +13,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-05-14T18:45:10.378Z",
+    "time": "2020-05-15T02:47:18.971Z",
     "url": "http://apidocjs.com",
     "version": "0.22.0"
   }

@@ -1185,52 +1185,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/hello",
-    "title": "Request a Hello World message",
-    "name": "GetHello",
-    "group": "Hello",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Hello World message</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/hello.js",
-    "groupTitle": "Hello"
-  },
-  {
-    "type": "post",
-    "url": "/hello",
-    "title": "Request a Hello World message",
-    "name": "PostHello",
-    "group": "Hello",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Hello World message</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/hello.js",
-    "groupTitle": "Hello"
-  },
-  {
-    "type": "get",
     "url": "/messages/:chatId?/:messageId?",
     "title": "Request to get chat messages",
     "name": "GetMessages",
