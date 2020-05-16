@@ -1155,5 +1155,54 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "routes/login.js",
     "groupTitle": "auth"
+  },
+  {
+    "type": "get",
+    "url": "/weather",
+    "title": "send a JSON inforamtion about the weather",
+    "name": "weather",
+    "group": "weather",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>&quot;username:password&quot; uses Basic Auth</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "JSON",
+            "description": "<p>weather information!</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/weather.js",
+    "groupTitle": "weather"
   }
 ] });
