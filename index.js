@@ -6,11 +6,20 @@ const app = express()
 const nodemailer = require('nodemailer')
 
 //EJS
-app.set('view-engine', 'ejs')
+app.set('view engine', 'ejs')
 
 let middleware = require('./utilities/middleware')
 
 const bodyParser = require("body-parser");
+
+
+/*  NEVER UNCOMMENT XXXXX*/
+//app.use(express.static('public')); 
+
+
+var passwordValidator = require('password-validator');
+ 
+
 //This allows parsing of the body of POST requests, that are encoded in JSON
 app.use(bodyParser.json())
 
@@ -19,7 +28,8 @@ app.use('/auth',     require('./routes/register'));
 app.use('/auth',     require('./routes/login'));
 app.use('/hello',    require('./routes/hello'));
 app.use('/demosql',  require('./routes/demosql'));
-//app.use('/pass',     require('./routes/forget_pass'))
+app.use('/pass',     require('./routes/forgotPass'))
+app.use('/weather',  require('./routes/weather'))
 app.use('/messages', middleware.checkToken,  require('./routes/messages.js'))
 app.use('/chats',    middleware.checkToken,  require('./routes/chats.js'))
 

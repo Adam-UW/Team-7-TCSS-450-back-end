@@ -1,14 +1,48 @@
 const express= require('express')
+const https = require('https')
 
+// Initiate the route
 var router= express.Router()
-router.use(express.json())
+const bodyParser= require('body-parser')
+router.use(bodyParser.urlencoded({extended: true}))
 
-var url="http://api.openweathermap.org/data/2.5/weather?q=seattle&appid=2fd309a672a3f18e290e9bf61e263016"
-
-router.get('/', (req, res)=>{
-    if(req.query.city){
-        res.send({
+/**
+ * @api {get} /weather send a JSON inforamtion about the weather 
+ * @apiName weather
+ * @apiGroup weather
+ * 
+ * @apiHeader {String} authorization "username:password" uses Basic Auth 
+ * 
+ * @apiSuccess {String} JSON weather information!
+ * 
+ * @apiError (400: Missing Parameters) {String} message "Missing required information"
+ * 
+ */ 
+router.get("/", (req, res) => {
+    const query= req.query.name
+    console.log(query)
+    let unit ="metric"
+    const url= "https://api.openweathermap.org/data/2.5/weather?q="+query+"&units="+unit+"&appid="+process.env.WEATHER_API 
+    if (query) {
+        https.get(url, (response)=>{
+            response.on('data', (data)=>{
+                const weatherData=JSON.parse(data)
+                res.send({
+                    weatherData
+                })
+            })
 
         })
-    }
-})
+
+    } else {
+        response.status(400).send({ message: "Missing required information"})}
+});
+
+
+// new route for zipcode 
+
+// new route for 24 hrs 
+
+// new route for 5-12 days 
+
+module.exports= router

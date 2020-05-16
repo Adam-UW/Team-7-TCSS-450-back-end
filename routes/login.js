@@ -60,19 +60,27 @@ router.get('/', (request, response) => {
                 let salt = result.rows[0].salt
                 //Retrieve our copy of the password
                 let ourSaltedHash = result.rows[0].password 
+                console.log('The pass in login', theirPw)
 
                 //Combined their password with our salt, then hash
                 let theirSaltedHash = getHash(theirPw, salt)
 
-                console.log(theirSaltedHash)
+                console.log('their salted',theirSaltedHash)
 
-                console.log(ourSaltedHash)
+                console.log('our salted', ourSaltedHash)
 
-                console.log(salt)
+                console.log('salt', salt)
 
                 //Did our salted hash match their salted hash?
                 if (ourSaltedHash === theirSaltedHash ) {
                     //credentials match. get a new JWT
+
+                    // PASS All firstname, lastname, and username  
+
+                   // TODO: handle  query to pass values inside JWT 
+                    // let first, last, userName
+                    // pool.query('SELECT firstname, lastname, username WHERE Email=$1')
+                    // let vals= [email]
 
                     let token = jwt.sign(
                         {
@@ -84,6 +92,8 @@ router.get('/', (request, response) => {
                             expiresIn: '14 days' // expires in 24 hours
                         }
                     )
+
+                    
 
                    // console.log(token)
                     //package and send the results

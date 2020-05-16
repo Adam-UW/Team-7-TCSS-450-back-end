@@ -116,6 +116,7 @@ router.get('/verify', (req, res)=> {
         console.log('Domain is matched Information is from Authentic email')
         if(req.query.id == rand){
             console.log('email is verified')
+            rand= Math.floor((Math.random() * 100) +54)
 
             let salt = crypto.randomBytes(32).toString('hex')
             let salted_hash= getHash(password, salt)
@@ -166,7 +167,9 @@ router.get('/verify', (req, res)=> {
         }
     }
     else{
-        res.end('<h1> Request is from unknown source')
+        res.set('Content-Type', 'text/html');
+        res.send(new Buffer('<h2>OOPS, this links has expired!!!</h2>'));
+      //  res.end('<h1> OOPS, this links has expired!!!<h1>')
     }
 
 })
@@ -185,65 +188,4 @@ var smtpTransport = nodemailer.createTransport({
 
 
 
-
 module.exports = router
-
-
-
- 
-
- /* PLEASE DELETE */
-
-/** router.post('/dummy', (req, res) => {
-    res.type("application/json")
-
-    //Retrieve data from query params
-    var first = req.body.first
-    var last = req.body.last
-    var email = req.body.email
-    var username = req.body.username
-    var password = req.body.password
-    //Verify that the caller supplied all the parameters
-    //In js, empty strings or null values evaluate to false
-    if(first && last && username && email && password) {
-        //We're storing salted hashes to make our application more secure
-        let salt = crypto.randomBytes(32).toString("hex")
-        let salted_hash = getHash(password, salt)
-        
-        //We're using placeholders ($1, $2, $3) in the SQL query string to avoid SQL Injection
-        //If you want to read more: https://stackoverflow.com/a/8265319
-        let theQuery = "INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING Email"
-        let values = [first, last, username, email, salted_hash, salt]
-        pool.query(theQuery, values)
-            .then(result => {
-                //We successfully added the user, let the user know
-                res.status(201).send({
-                    success: true,
-                    email: result.rows[0].email
-                })
-               // sendEmail(process.env.EMAIL, email, "Welcome!", `<strong>Hi ${last} Welcome to our app!</strong>`);
-            })
-            .catch((err) => {
-                //log the error
-                //console.log(err)
-                if (err.constraint == "members_username_key") {
-                    res.status(400).send({
-                        message: "Username exists"
-                    })
-                } else if (err.constraint == "members_email_key") {
-                    res.status(400).send({
-                        message: "Email exists"
-                    })
-                } else {
-                    res.status(400).send({
-                        message: err.detail
-                    })
-                }
-            })
-    } else {
-        response.status(400).send({
-            message: "Missing required information"
-        })
-    }
-}) **/  /* @NOTE  DELETE IT */
-
