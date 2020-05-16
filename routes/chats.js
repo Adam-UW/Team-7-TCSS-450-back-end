@@ -454,4 +454,45 @@ router.delete("/:chatId?/:email?", (request, response, next) => {
     }
 )
 
+
+// I just added that 
+// TODO: NOT YET WORKING 
+
+router.get("/:memberId?", (req, res)=>{
+        //validate on missing or invalid (type) parameters
+        if (!request.params.memberId) {
+            response.status(400).send({
+                message: "Missing required information"
+            })
+        } else if (isNaN(request.params.chatId)) {
+            response.status(400).send({
+                message: "Malformed parameter. chatId must be a number"
+            })
+        } else {
+            next()
+        }
+    }, (req, res)=>{
+        //validate chat id exists
+        let query = 'SELECT Name, ChatID FROM CHATS INNER JOIN ChatMembers ON ChatID WHERE MemberID=$1'
+        let values = [request.params.memberId]
+    
+        pool.query(query, values)
+            .then(result => {
+                if (result.rowCount == 0) {
+                    response.status(404).send({
+                        message: "Chat ID not found"
+                    })
+                } else {
+                   response.send({
+                       result
+                   })
+                }
+            }).catch(error => {
+                response.status(400).send({
+                    message: "SQL Error",
+                    error: error
+                })
+            })
+        })
+
 module.exports = router
