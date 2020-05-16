@@ -1175,6 +1175,19 @@ define({ "api": [
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>the name of a city</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [

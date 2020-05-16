@@ -13,6 +13,8 @@ router.use(bodyParser.urlencoded({extended: true}))
  * 
  * @apiHeader {String} authorization "username:password" uses Basic Auth 
  * 
+ *  @apiParam {String} city the name of a city
+ * 
  * @apiSuccess {String} JSON weather information!
  * 
  * @apiError (400: Missing Parameters) {String} message "Missing required information"
