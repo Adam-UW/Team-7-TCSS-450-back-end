@@ -11,8 +11,6 @@ router.use(bodyParser.urlencoded({extended: true}))
  * @apiName weather
  * @apiGroup weather
  * 
- * @apiHeader {String} authorization "username:password" uses Basic Auth 
- * 
  *  @apiParam {String} city the name of a city
  * 
  * @apiSuccess {String} JSON weather information!

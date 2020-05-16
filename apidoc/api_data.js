@@ -499,118 +499,6 @@ define({ "api": [
     "groupTitle": "Chats"
   },
   {
-    "type": "get",
-    "url": "/chats/:memeberId?",
-    "title": "Request list of chats a member is a part of",
-    "name": "GetChats",
-    "group": "Chats",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization",
-            "description": "<p>Valid JSON Web Token JWT</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "memeberId",
-            "description": "<p>the chat to look up.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "rowCount",
-            "description": "<p>the number of messages returned</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "members",
-            "description": "<p>List of members in the chat</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "chats.",
-            "description": "<p>A list of all chats the member is a part of.</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "404: MemberId Not Found": [
-          {
-            "group": "404: MemberId Not Found",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>&quot;Memeber ID Not Found&quot;</p>"
-          }
-        ],
-        "400: Invalid Parameter": [
-          {
-            "group": "400: Invalid Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>&quot;Malformed parameter. memeberId must be a number&quot;</p>"
-          }
-        ],
-        "400: Missing Parameters": [
-          {
-            "group": "400: Missing Parameters",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>&quot;Missing required information&quot;</p>"
-          }
-        ],
-        "400: SQL Error": [
-          {
-            "group": "400: SQL Error",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>the reported SQL error details</p>"
-          }
-        ],
-        "400: JSON Error": [
-          {
-            "group": "400: JSON Error",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/chats.js",
-    "groupTitle": "Chats"
-  },
-  {
     "type": "post",
     "url": "/chats",
     "title": "Request to add a chat",
@@ -1162,19 +1050,6 @@ define({ "api": [
     "title": "send a JSON inforamtion about the weather",
     "name": "weather",
     "group": "weather",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "authorization",
-            "description": "<p>&quot;username:password&quot; uses Basic Auth</p>"
-          }
-        ]
-      }
-    },
     "parameter": {
       "fields": {
         "Parameter": [
