@@ -47,7 +47,7 @@ router.get('/', (request, response) => {
     const [email, theirPw] = credentials.split(':')
 
     if(email && theirPw) {
-        let theQuery = "SELECT Password, Salt FROM Members WHERE Email=$1"
+        let theQuery = "SELECT Password, Salt, Firstname, LastName, Username, MemberID FROM Members WHERE Email=$1"
         let values = [email]
         pool.query(theQuery, values)
             .then(result => { 
@@ -81,11 +81,14 @@ router.get('/', (request, response) => {
                     // let first, last, userName
                     // pool.query('SELECT firstname, lastname, username WHERE Email=$1')
                     // let vals= [email]
-
+                    
                     let token = jwt.sign(
                         {
                             email: email,
-                            memberid: result.rows[0].memberid
+                            memberid:   result.rows[0].memberid,
+                            firstname:  result.rows[0].firstname,
+                            lastname:   result.rows[0].lastname,
+                            username:   result.rows[0].username
                         },
                         config.secret,
                         { 

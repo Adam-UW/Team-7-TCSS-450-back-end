@@ -108,9 +108,7 @@ router.get('/verify', (req, res)=> {
               res.sendFile(__dirname +"/index.html")
         }
         else{
-            res.status(404).send({
-                message: "OOPS, this link has expired!!!"
-            })
+            res.status(404).render('404')
         }
     }
 })

@@ -17,6 +17,10 @@ var router = express.Router()
 const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
+ 
+// Create a schema to validate passwords
+var schema = require('./PassValidator')
+
 
 // FOR USER to register
 let first, last, email, username, password;
@@ -58,7 +62,20 @@ router.post('/', (req, res, next)=>{
     password=req.body.password
     console.log(typeof password)
 
-        // make sure if the user exist
+    if(!password){
+        res.status(400).end({
+            message: "Oops Password is empty... session has ended"
+        })
+    }
+    else{
+        const validate= schema.validate(password, {list: true});
+        if(validate.includes('min', 'uppercase', 'digits', 'lowercase', 'spaces')){
+            res.status(400).send({
+                message:"Your password is not strong enough! it should be digits and letters with at least one uppercase letter"
+            }) 
+
+        }else{
+                  // make sure if the user exist
         let theQuery= "SELECT * FROM Members WHERE Email = $1"
         let value =[email]
 
@@ -78,6 +95,8 @@ router.post('/', (req, res, next)=>{
             })
         })
 
+        }
+    }
 }, (req, res)=>{
     
     if(first && last && email && username && password){

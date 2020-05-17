@@ -382,6 +382,8 @@ router.delete("/:chatId?/:email?", (request, response, next) => {
 // I just added that 
 // TODO: NOT YET WORKING 
 
+// I need the quary for the list of chats to give me: A list of chatId's and chat names a given memeber is a part of 
+
 router.get("/:memberId?", (req, res)=>{
         //validate on missing or invalid (type) parameters
         if (!request.params.memberId) {
