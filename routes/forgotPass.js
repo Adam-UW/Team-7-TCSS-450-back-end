@@ -42,6 +42,20 @@ var smtpTransport = nodemailer.createTransport({
 
 
 
+/**
+ * @api {post} /forgotpassword Request to retrieve a user password in the system
+ * @apiName Postforgotpassword
+ * @apiGroup forgotpassword
+ * 
+ * @apiParam {String} email the existence email
+ * 
+ * 
+ * @apiSuccess {string} success password retrieveing email has been sent 
+ * 
+ * @apiError (400: Wrong Email) {String} message "You provided an email that is not exist in the record"
+ * 
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ */ 
 router.post('/', (req, res, next)=>{
     email= req.body.email
     let theQuery= 'SELECT * FROM Members WHERE Email=$1'
