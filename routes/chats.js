@@ -406,10 +406,12 @@ router.get("/:memberId", (request, response, next)=>{
         let query = `SELECT ChatID, Name FROM Chats 
                          INNER JOIN ChatMembers ON 
                          Chats.ChatID=ChatMembers.ChatID 
-                         WHERE ChatMembers.MemberID=$1`
-        let values = Number(request.params.memberId)
+                         WHERE ChatMembers.MemberID=$1
+                         RETURNING  ChatId, Name, TimeStamp`
+        let values =[request.params.memberId]
         console.log('value inside next ')
         console.log(values)
+
     
         pool.query(query, values)
             .then(result => {
@@ -423,7 +425,7 @@ router.get("/:memberId", (request, response, next)=>{
                         Name: result.rows[0].Name
                     }
                     response.send({
-                      newRes
+                      result
                    })
                 }
             }).catch(error => {

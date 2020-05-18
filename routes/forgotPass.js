@@ -29,7 +29,7 @@ var schema = require('./PassValidator')
 
 // FOR USER to register
 var first, last, email, username, password;
-var rand, mailOptions, host, link
+var rand, mailOptions, host, link, firstFire, secondFire
 
 //Email varification stuff
 var smtpTransport = nodemailer.createTransport({
@@ -99,6 +99,8 @@ router.post('/', (req, res, next)=>{
         }
     })
 
+    firstFire=new Date().getMinutes()
+
     res.json({
         success: true,
         message: "Reset Password Email has sent"
@@ -109,10 +111,11 @@ router.post('/', (req, res, next)=>{
 //Email verify  
 router.get('/verify', (req, res)=> {
     console.log(req.protocol+":/"+req.get('host'))
+    secondFire=new Date().getMinutes()
 
     if((req.protocol+"://"+req.get('host'))==("http://"+host)){
         console.log('Domain is matched Information is from Authentic email')
-        if(req.query.id == rand){
+        if(req.query.id == rand && (secondFire-firstFire) < 10){
             rand= Math.floor((Math.random() * 100) +54)
             console.log('email is clicked')
 
