@@ -30,6 +30,7 @@ app.use('/hello',    require('./routes/hello'));
 app.use('/demosql',  require('./routes/demosql'));
 app.use('/pass',     require('./routes/forgotPass'))
 app.use('/weather',  require('./routes/weather'))
+app.use('/changepassword', require('./routes/changePassword'))
 app.use('/contacts', middleware.checkToken,  require('./routes/contacts.js'))
 app.use('/messages', middleware.checkToken,  require('./routes/messages.js'))
 app.use('/chats',    middleware.checkToken,  require('./routes/chats.js'))

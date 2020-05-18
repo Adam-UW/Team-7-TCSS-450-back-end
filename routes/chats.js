@@ -36,6 +36,7 @@ router.use(require("body-parser").json())
  * @apiUse JSONError
  */ 
 router.post("/", (request, response, next) => {
+    console.log('main chat ')
     if (!request.body.name) {
         response.status(400).send({
             message: "Missing required information"
@@ -95,7 +96,7 @@ router.put("/:chatId?/", (request, response, next) => {
         })
     } else if (isNaN(request.params.chatId)) {
         response.status(400).send({
-            message: "Malformed parameter. chatId must be a number"
+            message: "Malformed parameter. chatId must be a zzz number"
         })
     } else {
         next()
@@ -204,7 +205,7 @@ router.put("/:chatId?/", (request, response, next) => {
  * 
  * @apiUse JSONError
  */ 
-router.get("/:chatId?", (request, response, next) => {
+router.get("/done/:chatId?", (request, response, next) => {
     //validate on missing or invalid (type) parameters
     if (!request.params.chatId) {
         response.status(400).send({
@@ -212,7 +213,7 @@ router.get("/:chatId?", (request, response, next) => {
         })
     } else if (isNaN(request.params.chatId)) {
         response.status(400).send({
-            message: "Malformed parameter. chatId must be a number"
+            message: "Malformed parameter. chatId must  mmmm be a number"
         })
     } else {
         next()
@@ -379,28 +380,38 @@ router.delete("/:chatId?/:email?", (request, response, next) => {
 )
 
 
-// I just added that 
-// TODO: NOT YET WORKING 
+// @Adam
+// TODO: NOT YET WORKING  some weird SQL Error sequelize-cli !!!!!
 
 // I need the quary for the list of chats to give me: A list of chatId's and chat names a given memeber is a part of 
 
-router.get("/:memberId?", (req, res)=>{
+router.get("/:memberId", (request, response, next)=>{
+    console.log('/chats/memberID called', request.params.memberId)
         //validate on missing or invalid (type) parameters
         if (!request.params.memberId) {
             response.status(400).send({
                 message: "Missing required information"
             })
-        } else if (isNaN(request.params.chatId)) {
+        } else if (isNaN(request.params.memberId)) {
             response.status(400).send({
-                message: "Malformed parameter. chatId must be a number"
+                message: "Malformed parameter. chatId must be a xxxx number"
             })
         } else {
+            console.log('going to next')
             next()
         }
-    }, (req, res)=>{
+}, (request, response)=>{
+        console.log('value inside next ')
         //validate chat id exists
-        let query = 'SELECT Name, ChatID FROM CHATS INNER JOIN ChatMembers ON ChatID WHERE MemberID=$1'
-        let values = [request.params.memberId]
+        let query = `SELECT ChatID, Name FROM Chats 
+                         INNER JOIN ChatMembers ON 
+                         Chats.ChatID=ChatMembers.ChatID 
+                         WHERE ChatMembers.MemberID=$1
+                         RETURNING  ChatId, Name, TimeStamp`
+        let values =[request.params.memberId]
+        console.log('value inside next ')
+        console.log(values)
+
     
         pool.query(query, values)
             .then(result => {
@@ -409,8 +420,12 @@ router.get("/:memberId?", (req, res)=>{
                         message: "Chat ID not found"
                     })
                 } else {
-                   response.send({
-                       result
+                    let newRes={
+                        chatID: result.rows[0].chatID,
+                        Name: result.rows[0].Name
+                    }
+                    response.send({
+                      result
                    })
                 }
             }).catch(error => {

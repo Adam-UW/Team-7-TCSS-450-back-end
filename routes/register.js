@@ -24,7 +24,7 @@ var schema = require('./PassValidator')
 
 // FOR USER to register
 let first, last, email, username, password;
-let rand, mailOptions, host, link
+let rand, mailOptions, host, link, firstFire, secondFire
 
 
 
@@ -120,6 +120,8 @@ router.post('/', (req, res, next)=>{
         }
     })
 
+    firstFire=new Date().getMinutes()
+
     res.json({
         success: true,
         message: "email has sent"
@@ -129,11 +131,12 @@ router.post('/', (req, res, next)=>{
 
 //Email verify  
 router.get('/verify', (req, res)=> {
+    secondFire=new Date().getMinutes()
     console.log(req.protocol+":/"+req.get('host'))
 
     if((req.protocol+"://"+req.get('host'))==("http://"+host)){
         console.log('Domain is matched Information is from Authentic email')
-        if(req.query.id == rand){
+        if(req.query.id == rand && (secondFire-firstFire) < 10){
             console.log('email is verified')
             rand= Math.floor((Math.random() * 100) +54)
 
