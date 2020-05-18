@@ -278,5 +278,79 @@ router.delete("/contact/:memberId?", (request, response, next) => {
         })
 });
 
+
+
+
+/**
+ * @api {get} /contacts/chats Request to get list of recent chats from contacts 
+ * @apiName GetContactChats
+ * @apiGroup Contacts
+ * 
+ * @apiDescription Request to get list of chats for contacts
+ * 
+ * @apiSuccess {Object[]} List of chats with recent message
+ * 
+ * @apiError (404: memberId Not Found) {String} message "member ID Not Found"
+ * 
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * 
+ * @apiUse JSONError
+ */
+router.get("/chats", (request, response, next) => {
+    console.log("/contacts/chats");
+    console.log("User memberID: " + request.decoded.memberid);
+    if (!request.decoded.memberid) {
+        response.status(400).send({
+            message: "Missing required information"
+        })
+    } else if (isNaN(request.decoded.memberid)) {
+        response.status(400).send({
+            message: "Malformed parameter. memberId must be a number"
+        })
+    } else {
+        next()
+    }
+}, (request, response) => {
+    //Get contact info
+    // let query = 'SELECT MemberID_B, Members.FirstName, Members.LastName, Members.email, Members.Username FROM Contacts INNER JOIN Members ON Contacts.MemberID_B = Members.MemberID where Contacts.MemberID_A = $1'
+    // let query = 'SELECT ChatID, MemberID FROM ChatMembers where MemberID=$1'
+    // let query = 'SELECT ChatID, MemberID FROM ChatMembers where ChatID in (SELECT ChatID FROM ChatMembers where MemberID=$1) AND MemberID != $1'
+    // let query = 'SELECT FirstName, LastName, Username, Email, MemberID FROM Members where MemberID in (SELECT MemberID FROM ChatMembers where ChatID in (SELECT ChatID FROM ChatMembers where MemberID=$1) AND MemberID != $1)'
+    let query = 'SELECT FirstName, LastName, Username, Email, ChatID FROM Members INNER JOIN ChatMembers ON ChatMembers.MemberID = Members.MemberID  where ChatMembers.MemberID in (SELECT MemberID FROM ChatMembers where ChatID in (SELECT ChatID FROM ChatMembers where MemberID=$1) AND MemberID != $1)'
+    let values = [request.decoded.memberid]
+
+    pool.query(query, values)
+        .then(result => {
+            if (result.rowCount == 0) {
+                response.status(404).send({
+                    message: "No messages"
+                })
+            } else {
+                let listContactChats = [];
+                result.rows.forEach(entry =>
+                    listContactChats.push(
+                        {
+                            "chat": entry.chatid,
+                            "firstName": entry.firstname,
+                            "lastName": entry.lastname,
+                            "userName": entry.username,
+                            "memberId": entry.memberid
+                        }
+                    )
+                )
+                response.send({
+                    success: true,
+                    contacts: listContactChats
+                })
+            }
+        }).catch(error => {
+            console.log(error);
+            response.status(400).send({
+                message: "SQL Error",
+                error: error
+            })
+        })
+});
+
 module.exports = router
 
