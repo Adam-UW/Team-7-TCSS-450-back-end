@@ -722,6 +722,470 @@
   },
   {
     "type": "get",
+    "url": "/contacts/contact/:memberId?",
+    "title": "Request to delete contact",
+    "name": "DeleteContact",
+    "group": "Contacts",
+    "description": "<p>Request to delete contact</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "memberId",
+            "description": "<p>deleting</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true when the name is deleted</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Contact not found&quot;</p>"
+          }
+        ],
+        "400: Invalid Parameter": [
+          {
+            "group": "400: Invalid Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Malformed parameter. memberId must be a number&quot;</p>"
+          }
+        ],
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
+    "url": "/contacts/chatlist",
+    "title": "Request to get list of recent chats from contacts",
+    "name": "GetChatList",
+    "group": "Contacts",
+    "description": "<p>Request to get list of chats with chat id and name</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chats",
+            "description": "<p>List of chats with recent message { &quot;chat&quot;: 1, &quot;name&quot;: &quot;TestName&quot; }</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;member ID Not Found&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
+    "url": "/contacts/contact/:memberId?",
+    "title": "Request to get contact info specific contact",
+    "name": "GetContact",
+    "group": "Contacts",
+    "description": "<p>Request to get contact info on specific contact</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "memberId",
+            "description": "<p>the contact to get info for</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts.email",
+            "description": "<p>The email of the contact</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts.memberId",
+            "description": "<p>The id of the contact</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts.firstName",
+            "description": "<p>The first name of the contact</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts.lastName",
+            "description": "<p>The last name of the contact</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts.userName",
+            "description": "<p>The user name of the contact</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Contact not found&quot;</p>"
+          }
+        ],
+        "400: Invalid Parameter": [
+          {
+            "group": "400: Invalid Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Malformed parameter. memberId must be a number&quot;</p>"
+          }
+        ],
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
+    "url": "/contacts/chats",
+    "title": "Request to get list of recent chats from contacts",
+    "name": "GetContactChats",
+    "group": "Contacts",
+    "description": "<p>Request to get list of chats for contacts</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "List",
+            "description": "<p>of chats with recent message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;member ID Not Found&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
+    "url": "/contacts",
+    "title": "Request to get list of contacts",
+    "name": "GetContacts",
+    "group": "Contacts",
+    "description": "<p>Request to get list of contacts</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>List of contacts</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;member ID Not Found&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "post",
+    "url": "/contacts",
+    "title": "Request to add a contact to current user.",
+    "name": "PostContacts",
+    "group": "Contacts",
+    "description": "<p>Adds contact to user contacts</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Valid JSON Web Token JWT</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "memberId",
+            "description": "<p>of the contact being added</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true when contact is added</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400: Unknown user": [
+          {
+            "group": "400: Unknown user",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;unknown contact&quot;</p>"
+          }
+        ],
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: Unknow Member ID": [
+          {
+            "group": "400: Unknow Member ID",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;invalid member id&quot;</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
     "url": "/messages/:chatId?/:messageId?",
     "title": "Request to get chat messages",
     "name": "GetMessages",
@@ -1043,6 +1507,154 @@
     "version": "0.0.0",
     "filename": "routes/login.js",
     "groupTitle": "auth"
+  },
+  {
+    "type": "post",
+    "url": "/changepassword",
+    "title": "Request to change a user password in the system",
+    "name": "Postchangepassword",
+    "group": "changepassword",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>the existence email</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "old",
+            "description": "<p>valid password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "new",
+            "description": "<p>valid password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "success",
+            "description": "<p>password has been changed</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400: Empty values": [
+          {
+            "group": "400: Empty values",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;You provided an empty value for either email, old password or the new password&quot;</p>"
+          }
+        ],
+        "400: invalid old password": [
+          {
+            "group": "400: invalid old password",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Your old password is not matching your record&quot;</p>"
+          }
+        ],
+        "404: Email Not Found": [
+          {
+            "group": "404: Email Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Email provide to change password for has not found&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;password is matched but not updated SQL ERROR&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/changePassword.js",
+    "groupTitle": "changepassword"
+  },
+  {
+    "type": "post",
+    "url": "/forgotpassword",
+    "title": "Request to retrieve a user password in the system",
+    "name": "Postforgotpassword",
+    "group": "forgotpassword",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>the existence email</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "success",
+            "description": "<p>password retrieveing email has been sent</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400: Wrong Email": [
+          {
+            "group": "400: Wrong Email",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;You provided an email that is not exist in the record&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/forgotPass.js",
+    "groupTitle": "forgotpassword"
   },
   {
     "type": "get",
