@@ -193,7 +193,7 @@ router.get("/", (request, response, next) => {
     }
 }, (request, response) => {
     //Get contact info
-    let query = 'SELECT MemberID_B, Members.FirstName, Members.LastName, Members.email, Members.Username FROM Contacts INNER JOIN Members ON Contacts.MemberID_B = Members.MemberID where Contacts.MemberID_A = $1'
+    let query = 'SELECT Verified, MemberID_B, Members.FirstName, Members.LastName, Members.email, Members.Username FROM Contacts INNER JOIN Members ON Contacts.MemberID_B = Members.MemberID where Contacts.MemberID_A = $1'
     let values = [request.decoded.memberid]
 
     pool.query(query, values)
@@ -211,7 +211,8 @@ router.get("/", (request, response, next) => {
                             "firstName": entry.firstname,
                             "lastName": entry.lastname,
                             "userName": entry.username,
-                            "memberId": entry.memberid_b
+                            "memberId": entry.memberid_b,
+                            "verified": entry.verified
                         }
                     )
                 )
@@ -278,6 +279,73 @@ router.delete("/contact/:memberId?", (request, response, next) => {
         })
 });
 
+
+/**
+ * @api {get} /contacts/all Request to get list of all people available 
+ * @apiName GetAll
+ * @apiGroup Contacts
+ * 
+ * @apiDescription Request to get list of all people
+ * 
+ * @apiSuccess {Object[]} contacts List of contacts
+ * 
+ * @apiError (404: memberId Not Found) {String} message "member ID Not Found"
+ * 
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * 
+ * @apiUse JSONError
+ */
+
+//  TODO exclude all your contacts
+router.get("/all", (request, response, next) => {
+    console.log("/contacts");
+    // console.log("User token member id: " + request.decoded.memberid);
+    if (!request.decoded.memberid) {
+        response.status(400).send({
+            message: "Missing required information"
+        })
+    } else if (isNaN(request.decoded.memberid)) {
+        response.status(400).send({
+            message: "Malformed parameter. memberId must be a number"
+        })
+    } else {
+        next()
+    }
+}, (request, response) => {
+    //Get contact info
+    let query = 'SELECT FirstName, LastName, email, Username, MemberID FROM Members where MemberID != $1'
+    let values = [request.decoded.memberid]
+    pool.query(query, values)
+        .then(result => {
+            if (result.rowCount == 0) {
+                response.status(404).send({
+                    message: "Contact not found"
+                })
+            } else {
+                let listContacts = [];
+                result.rows.forEach(entry =>
+                    listContacts.push(
+                        {
+                            "email": entry.email,
+                            "firstName": entry.firstname,
+                            "lastName": entry.lastname,
+                            "userName": entry.username,
+                            "memberId": entry.memberid_b
+                        }
+                    )
+                )
+                response.send({
+                    success: true,
+                    contacts: listContacts
+                })
+            }
+        }).catch(error => {
+            response.status(400).send({
+                message: "SQL Error",
+                error: error
+            })
+        })
+});
 
 
 
