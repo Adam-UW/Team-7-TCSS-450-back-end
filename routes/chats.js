@@ -172,6 +172,7 @@ router.put("/:chatId?/", (request, response, next) => {
     let values = [request.params.chatId, request.decoded.memberid]
     pool.query(insert, values)
         .then(result => {
+            // TODO call some backend method that sends a notification
             response.send({
                 sucess: true
             })
