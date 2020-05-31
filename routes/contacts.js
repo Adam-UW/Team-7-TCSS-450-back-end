@@ -42,13 +42,13 @@ router.post("/", (request, response, next) => {
     // console.log("Contact memberId adding : " + request.body.memberId);
 
     //validate on empty parameters
-    if (!request.body.memberId) {
+    if (!request.body.memberId && !request.body.verified) {
         response.status(400).send({
             message: "Missing required information"
         })
-    } else if (isNaN(request.body.memberId)) {
+    } else if (isNaN(request.body.memberId) || isNaN(request.body.verified)) {
         response.status(400).send({
-            message: "Malformed parameter. memberId must be a number"
+            message: "Malformed parameter. memberId must be a number, verified must be a number"
         })
     } else {
         next()
@@ -75,8 +75,8 @@ router.post("/", (request, response, next) => {
         })
 }, (request, response) => {
     //add the contact
-    let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B) VALUES($1, $2)`
-    let values = [request.decoded.memberid, request.body.memberId]
+    let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified) VALUES($1, $2, $3)`
+    let values = [request.decoded.memberid, request.body.memberId, request.body.verified]
     pool.query(insert, values)
         .then(result => {
             if (result.rowCount == 1) {
