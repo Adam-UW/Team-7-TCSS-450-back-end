@@ -488,5 +488,74 @@ router.get("/chatlist", (request, response, next) => {
 });
 
 
+
+
+
+// NOT SURE YET 
+
+
+/**
+ * @api {get} 'getAll/:memberid? Request to get all Unfriend contacts 
+ * @apiName GetContact
+ * @apiGroup Contacts
+ * 
+ * @apiDescription Request to get list of Unfriend contacts of a member
+ * 
+ * @apiParam {Number} memberId the contact to get info for 
+ * 
+ * @apiSuccess {JSON} list of unfriend contacts
+ * 
+ * @apiError (404: memberId Not Found) {String} message "Contact not found"
+ * @apiError (400: Invalid Parameter) {String} message "Malformed parameter. memberId must be a number" 
+ * @apiError (400: Missing Parameters) {String} message "Missing required information"
+ * 
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * 
+ * @apiUse JSONError
+ */
+router.get('/getAll/:memberid', (request, response, next)=>{
+    console.log('I am inside the new route')
+    if(!request.params.memberid){
+        response.status(400).send({
+            message: 'Missing required information'
+        })
+    }else if(isNaN(request.params.memberid)){
+        response.status(400).send({
+            message:'Malformed parameter. memberId must be a number'
+        })
+    }else{
+        next()
+    }
+}, (request, response)=>{
+    console.log('I am on next response')
+    let theQuery=`SELECT firstname, lastname, MemberID from Members WHERE MemberID NOT IN
+                                 (SELECT MemberID_B from Contacts WHERE MemberID_A=$1) 
+                                                    AND
+                                           MemberID NOT IN ($1)`
+    let theSecondQuery=`SELECT * FROM Members WHERE MemberID=$1`
+    let values= [parseInt(request.params.memberid)]
+    console.log(values)
+
+    pool.query(theQuery, values)
+    .then(result=>{
+        if(result.rowCount==0){
+            response.status(404).send({
+                message:'no change on DB! check the data in tables then your SQL syntax'
+            })
+        }else{
+            let listOfUnFriend=[]
+            result.rows.forEach(entry=>{
+                listOfUnFriend.push({
+                    entry
+                })
+            })
+            response.send({
+                listOfUnFriend
+               
+            })
+        }
+    }).catch(err => console.log(err))
+})
+
 module.exports = router
 
