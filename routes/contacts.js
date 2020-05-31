@@ -488,12 +488,6 @@ router.get("/chatlist", (request, response, next) => {
 });
 
 
-
-
-
-// NOT SURE YET 
-
-
 /**
  * @api {get} 'getAll/:memberid? Request to get all Unfriend contacts 
  * @apiName GetContact
