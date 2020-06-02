@@ -74,28 +74,47 @@ router.post("/", (request, response, next) => {
             })
         })
 }, (request, response) => {
-    //add the contact
-    let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified) VALUES($1, $2, $3)`
-    let values = [request.decoded.memberid, request.body.memberId, request.body.verified]
-    pool.query(insert, values)
-        .then(result => {
-            if (result.rowCount == 1) {
-                //insertion success. Attach the message to the Response obj
+    if (request.body.verified == 1) {
+        console.log("updating");
+        //updates the contact
+        let insert = `UPDATE Contacts SET verified=1 where MemberID_A=$1 AND MemberID_B=$2`
+        let values = [request.decoded.memberid, request.body.memberId]
+        pool.query(insert, values)
+            .then(result => {
                 response.send({
                     success: true
                 })
-            } else {
+            }).catch(err => {
                 response.status(400).send({
-                    "message": "unknown error"
+                    message: "SQL Error on insert",
+                    error: err
                 })
-            }
-
-        }).catch(err => {
-            response.status(400).send({
-                message: "SQL Error on insert",
-                error: err
             })
-        })
+    } else {
+        console.log("inserting");
+        //add the contact
+        let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified) VALUES($1, $2, $3)`
+        let values = [request.decoded.memberid, request.body.memberId, request.body.verified]
+        pool.query(insert, values)
+            .then(result => {
+                if (result.rowCount == 1) {
+                    //insertion success. Attach the message to the Response obj
+                    response.send({
+                        success: true
+                    })
+                } else {
+                    response.status(400).send({
+                        "message": "unknown error"
+                    })
+                }
+
+            }).catch(err => {
+                response.status(400).send({
+                    message: "SQL Error on insert",
+                    error: err
+                })
+            })
+    }
 })
 
 /**
@@ -507,48 +526,48 @@ router.get("/chatlist", (request, response, next) => {
  * 
  * @apiUse JSONError
  */
-router.get('/getAll/:memberid', (request, response, next)=>{
+router.get('/getAll/:memberid', (request, response, next) => {
     console.log('I am inside the new route')
-    if(!request.params.memberid){
+    if (!request.params.memberid) {
         response.status(400).send({
             message: 'Missing required information'
         })
-    }else if(isNaN(request.params.memberid)){
+    } else if (isNaN(request.params.memberid)) {
         response.status(400).send({
-            message:'Malformed parameter. memberId must be a number'
+            message: 'Malformed parameter. memberId must be a number'
         })
-    }else{
+    } else {
         next()
     }
-}, (request, response)=>{
+}, (request, response) => {
     console.log('I am on next response')
-    let theQuery=`SELECT firstname, lastname, MemberID from Members WHERE MemberID NOT IN
+    let theQuery = `SELECT firstname, lastname, MemberID from Members WHERE MemberID NOT IN
                                  (SELECT MemberID_B from Contacts WHERE MemberID_A=$1) 
                                                     AND
                                            MemberID NOT IN ($1)`
-    let theSecondQuery=`SELECT * FROM Members WHERE MemberID=$1`
-    let values= [parseInt(request.params.memberid)]
+    let theSecondQuery = `SELECT * FROM Members WHERE MemberID=$1`
+    let values = [parseInt(request.params.memberid)]
     console.log(values)
 
     pool.query(theQuery, values)
-    .then(result=>{
-        if(result.rowCount==0){
-            response.status(404).send({
-                message:'no change on DB! check the data in tables then your SQL syntax'
-            })
-        }else{
-            let listOfUnFriend=[]
-            result.rows.forEach(entry=>{
-                listOfUnFriend.push({
-                    entry
+        .then(result => {
+            if (result.rowCount == 0) {
+                response.status(404).send({
+                    message: 'no change on DB! check the data in tables then your SQL syntax'
                 })
-            })
-            response.send({
-                listOfUnFriend
-               
-            })
-        }
-    }).catch(err => console.log(err))
+            } else {
+                let listOfUnFriend = []
+                result.rows.forEach(entry => {
+                    listOfUnFriend.push({
+                        entry
+                    })
+                })
+                response.send({
+                    listOfUnFriend
+
+                })
+            }
+        }).catch(err => console.log(err))
 })
 
 module.exports = router
