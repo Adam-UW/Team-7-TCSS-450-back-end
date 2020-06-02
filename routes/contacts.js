@@ -249,7 +249,7 @@ router.get("/", (request, response, next) => {
 });
 
 /**
- * @api {get} /contacts/contact/:memberId? Request to delete contact 
+ * @api {delete} /contacts/contact/:memberId? Request to delete contact 
  * @apiName DeleteContact
  * @apiGroup Contacts
  * 
