@@ -16,6 +16,7 @@ function sendMessageToIndividual(token, message) {
     // Send push notification via the Send Notifications API 
     // https://pushy.me/docs/api/send-notifications 
     pushyAPI.sendPushNotification(data, token, {}, function (err, id) {
+        console.log('sending to individual')
         // Log errors to console 
         if (err) {
             return console.log('Fatal Error', err);
@@ -23,11 +24,37 @@ function sendMessageToIndividual(token, message) {
 
         // Log success 
         console.log('Push sent successfully! (ID: ' + id + ')')
+        
+    })
+}
+
+//use to send message to a specific client by the token
+function sendMessageToContacts(token, message) {
+    console.log('Pusht send got hit')
+
+    //build the message for Pushy to send
+    var data = {
+        "type": "msg from adding contacts",
+        "message": message
+    }
+
+    // Send push notification via the Send Notifications API 
+    // https://pushy.me/docs/api/send-notifications 
+    pushyAPI.sendPushNotification(data, token, {}, function (err, id) {
+        console.log('sending to contact..')
+        // Log errors to console 
+        if (err) {
+            return console.log('Fatal Error', err);
+        }
+
+        // Log success 
+        console.log('Push sent successfully! (ID: ' + id + ')')
+        
     })
 }
 
 //add other "sendYypeToIndividual" functions here. Don't forget to exprot them
 
 module.exports = {
-    sendMessageToIndividual
+    sendMessageToIndividual, sendMessageToContacts
 }

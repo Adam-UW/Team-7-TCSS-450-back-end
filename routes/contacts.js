@@ -3,7 +3,7 @@ const express = require('express')
 
 //Access the connection to Heroku Database
 let pool = require('../utilities/utils').pool
-
+let msg_functions = require('../utilities/utils').messaging
 var router = express.Router()
 
 //This allows parsing of the body of POST requests, that are encoded in JSON
@@ -73,17 +73,32 @@ router.post("/", (request, response, next) => {
                 error: error
             })
         })
-}, (request, response) => {
+}, (request, response, next) => {
     //add the contact
-    let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified) VALUES($1, $2, $3)`
+    // RETURNING primarykey AS contactID MemberID_A, MemberID_B, verified AS friend`
+    let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified)
+                  VALUES($1, $2, $3)
+                  RETURNING PrimaryKey, MemberID_A, MemberID_B, verified `
+            
     let values = [request.decoded.memberid, request.body.memberId, request.body.verified]
+    console.log(values)
     pool.query(insert, values)
         .then(result => {
             if (result.rowCount == 1) {
                 //insertion success. Attach the message to the Response obj
-                response.send({
-                    success: true
-                })
+                // response.send({
+                //     success: true
+                // })
+                if(request.body.verified ==1){
+                    console.log('We are friend')
+                    response.message= result.rows[0]
+                    console.log(result.rows[0])
+                    next()
+                }else{
+                    response.send({
+                        success: true
+                    })
+                }
             } else {
                 response.status(400).send({
                     "message": "unknown error"
@@ -96,6 +111,36 @@ router.post("/", (request, response, next) => {
                 error: err
             })
         })
+}, (request, response)=>{
+    console.log('Notifcation is going to be sent')
+        // send a notification of this message to ALL members with registered tokens
+        let query = `SELECT token FROM Push_Token
+                        INNER JOIN Contacts ON
+                        Push_Token.memberid=Contacts.memberid_a
+                        WHERE Contacts.memberid_a=$1`
+        let values = [request.body.memberId]
+        pool.query(query, values)
+            .then(result => {
+                // console.log(request.decoded.email)
+                // console.log(request.body.message)
+                 console.log(response.message)
+                 console.log(result.rows[0])
+                 console.log('hmmm')
+                result.rows.forEach(entry => 
+                    msg_functions.sendMessageToContacts(
+                        entry.token, 
+                        response.message))
+                response.send({
+                    success:true
+                })
+            }).catch(err => {
+
+                response.status(400).send({
+                    message: "SQL Error on select from push token",
+                    error: err
+                })
+            })
+    
 })
 
 /**
