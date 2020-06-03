@@ -38,9 +38,18 @@ router.get("/", (req, res) => {
     } else {
         response.status(400).send({ message: "Missing required information"})}
 })
-
-// new route for zipcode 
-http://api.openweathermap.org/data/2.5/weather?zip=98125,us&appid=2fd309a672a3f18e290e9bf61e263016
+/**
+ * @api {get} /weather send a JSON inforamtion about the weather 
+ * @apiName weather
+ * @apiGroup weather
+ * 
+ *  @apiParam {String} Zip code of a city
+ * 
+ * @apiSuccess {String} JSON weather information!
+ * 
+ * @apiError (400: Missing Parameters) {String} message "Missing required information"
+ * 
+ */ 
 router.get("/zip", (req, res) => {
     const zip= req.query.code
     let unit ="imperial"
@@ -61,9 +70,18 @@ router.get("/zip", (req, res) => {
         response.status(400).send({ message: "Missing required information"})}
 })
 
-
-// http://api.openweathermap.org/data/2.5/forecast?q=seattle&units=imperial&appid=2fd309a672a3f18e290e9bf61e263016
-// new route for 24 hrs 
+/**
+ * @api {get} /weather send a JSON inforamtion about the weather  for the current 24 Hrs
+ * @apiName weather
+ * @apiGroup weather
+ * 
+ *  @apiParam {String} city the name of a city
+ * 
+ * @apiSuccess {String} JSON weather information!
+ * 
+ * @apiError (400: Missing Parameters) {String} message "Missing required information"
+ * 
+ */ 
 router.get("/daily", (req, res) => {
     const query= req.query.name
     console.log(query)
@@ -84,9 +102,18 @@ router.get("/daily", (req, res) => {
         response.status(400).send({ message: "Missing required information"})}
 })
 
-//  For Latitude	47.608013 Longitude	-122.335167
-// http://api.openweathermap.org/data/2.5/weather?lat=47.608013&lon=-122.335167&appid=2fd309a672a3f18e290e9bf61e263016
-// TODO @ Must move all links into .env
+/**
+ * @api {get} /weather send a JSON inforamtion about the weather based on the GPS coordinates
+ * @apiName weather
+ * @apiGroup weather
+ * 
+ *  @apiParam {String} params values for the latitude and longitude of a location
+ * 
+ * @apiSuccess {String} JSON weather information!
+ * 
+ * @apiError (400: Missing Parameters) {String} message "Missing required information"
+ * 
+ */ 
 router.get('/gps/:lat&:long', (req, res)=>{
     const lat= parseFloat(req.params.lat)
     const long=parseFloat(req.params.long)
@@ -129,109 +156,5 @@ router.get('/gps/:lat&:long', (req, res)=>{
             })
         })
     }})
-
-
-
-   
-//     //Current 
-//    // const url="https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&appid="+process.env.WEATHER_API
-
-//     // 5 Days by lat & long
-//     const url="https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+long+"&appid="+process.env.WEATHER_API
-//     if(lat && long){
-//         https.get(url, response=>{
-//             response.on('data', data=>{
-//                 const weatherData= JSON.parse(data)
-//                console.log(weatherData.name)
-//              //  console.log(weatherData)
-//                 res.send({
-//                     weatherData
-//                 })
-//             })
-//         })
-//     }else{
-//         response.status(400).send({msg:'Missing required information'})
-//     }
-
-// })
-
-// function callHttp(url){
-//     return new Promise((resolve, reject)=>{
-//         if(url){
-//             let weather=""
-//             https.get(url, response=>{
-//                 response.on('data', data=>{
-//                      weather=JSON.parse(data)
-//                     console.log('The proimise is triggered')
-//                //     console.log(weather)
-//                 })
-//             })
-
-//            if(weather){
-//                resolve( weather)
-//                return weather
-//            }else{
-//             reject(weather)
-//            // console.log('inside reject')
-//            return weather
-//         }
-
-//         }
-//     })
-// }
-
-// async function httpsCall (url){
-//     return new Promise((resolve, reject)=>{
-//         console.log(`Inside first promise ${url}`)
-//         if()
-//     })
-//     var weatherData=""
-//     https.get(url, response=>{
-//        response.on('data', data=>{
-//             weatherData=JSON.parse(data)
-//             console.log(weatherData) // Only in 24 hrs
-//        })
-//     })
-    
-//     console.log(weatherData, 'I am last at httpsCall')
-//     return weatherData=="" ? weatherData : false
-
-// }
-
-// async 
-// function httpHelp(url){
-//     try{
-//         const response = await callHttp(url)
-//         console.log('response recieveed ')
-//     }
-//     catch(err){
-//         console.log(err)
-//     }
-// }
-
-
-
-// /fruit/:fruitName/:fruitColor', function(req, res) {
-// Ignore 
-//  function htppHelper(url){
-// let weatherReturn=""
-//       https.get(url, (response)=>{
-//         response.on('data', (data)=>{
-//             weatherReturn=JSON.parse(data)
-//            //  console.log('I am here ' )
-//             // console.log(weather)       
-//         })
-//     })
-//    return weatherReturn != "" ? weatherReturn : undefined
-
-// }
-
-
-
-
-
-
-
-// new route for 5-12 days 
 
 module.exports= router

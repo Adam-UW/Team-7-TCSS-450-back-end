@@ -38,9 +38,6 @@ router.use(require("body-parser").json())
  * @apiUse JSONError
  */
 router.post("/", (request, response, next) => {
-    // console.log("User token member id: " + request.decoded.memberid);
-    // console.log("Contact memberId adding : " + request.body.memberId);
-
     //validate on empty parameters
     if (!request.body.memberId && !request.body.verified) {
         response.status(400).send({
@@ -78,23 +75,20 @@ router.post("/", (request, response, next) => {
     // RETURNING primarykey AS contactID MemberID_A, MemberID_B, verified AS friend`
     let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified)
                   VALUES($1, $2, $3)
-                  RETURNING PrimaryKey, MemberID_A, MemberID_B, verified `
+                  RETURNING PrimaryKey, MemberID_A, MemberID_B, verified`
             
     let values = [request.decoded.memberid, request.body.memberId, request.body.verified]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
             if (result.rowCount == 1) {
-                //insertion success. Attach the message to the Response obj
-                // response.send({
-                //     success: true
-                // })
                 if(request.body.verified ==1){
-                    console.log('We are friend')
+                    console.log(` This ${request.decoded.memberId} Is a friend with ${request.body.memberId}`)
                     response.message= result.rows[0]
-                    console.log(result.rows[0])
+                   // console.log(result.rows[0])
                     next()
                 }else{
+                    console.log(` This ${request.decoded.memberId} Is not friend with ${request.body.memberId}`)
                     response.send({
                         success: true
                     })
@@ -112,7 +106,7 @@ router.post("/", (request, response, next) => {
             })
         })
 }, (request, response)=>{
-    console.log('Notifcation is going to be sent')
+    console.log('Send notification to pushy.... to the friend user')
         // send a notification of this message to ALL members with registered tokens
         let query = `SELECT token FROM Push_Token
                         INNER JOIN Contacts ON
@@ -121,11 +115,9 @@ router.post("/", (request, response, next) => {
         let values = [request.body.memberId]
         pool.query(query, values)
             .then(result => {
-                // console.log(request.decoded.email)
-                // console.log(request.body.message)
                  console.log(response.message)
                  console.log(result.rows[0])
-                 console.log('hmmm')
+                 console.log('About to send a notification through pushy...')
                 result.rows.forEach(entry => 
                     msg_functions.sendMessageToContacts(
                         entry.token, 
