@@ -39,7 +39,7 @@ router.use(require("body-parser").json())
  */
 router.post("/", (request, response, next) => {
     // console.log("User token member id: " + request.decoded.memberid);
-    // console.log("Contact memberId adding : " + request.body.memberId);
+    console.log("Contact memberId adding : " + request.body.memberId);
 
     //validate on empty parameters
     if (!request.body.memberId && !request.body.verified) {
@@ -77,14 +77,16 @@ router.post("/", (request, response, next) => {
     if (request.body.verified == 1) {
         console.log("updating");
         //updates the contact
-        let insert = `UPDATE Contacts SET verified=1 where MemberID_A=$1 AND MemberID_B=$2`
+        let insert = `UPDATE Contacts SET verified=1 where (MemberID_A=$1 AND MemberID_B=$2) OR (MemberID_A=$2 AND MemberID_B=$1)`
         let values = [request.decoded.memberid, request.body.memberId]
         pool.query(insert, values)
             .then(result => {
+                console.log("good " + result);
                 response.send({
                     success: true
                 })
             }).catch(err => {
+                console.log(err);
                 response.status(400).send({
                     message: "SQL Error on insert",
                     error: err
