@@ -77,11 +77,26 @@ router.post("/", (request, response, next) => {
     if (request.body.verified == 1) {
         console.log("updating");
         //updates the contact
-        let insert = `UPDATE Contacts SET verified=1 where (MemberID_A=$1 AND MemberID_B=$2) AND (MemberID_A=$2 AND MemberID_B=$1)`
+        let insert = `UPDATE Contacts SET verified=1 where MemberID_A=$1 AND MemberID_B=$2`
         let values = [request.decoded.memberid, request.body.memberId]
         pool.query(insert, values)
             .then(result => {
-                console.log("good " + result);
+                // console.log("Updating the second one" + result);
+                // let insert2 = `UPDATE Contacts SET verified=1 where MemberID_A=$2 AND MemberID_B=$1`
+                // let values2 = [request.decoded.memberid, request.body.memberId]
+                // pool.query(insert2, values2)
+                //     .then(result2 => {
+                //         console.log(result2);
+                //         response.send({
+                //             success: true
+                //         })
+                //     }).catch(err => {
+                //         console.log(err);
+                //         response.status(400).send({
+                //             message: "SQL Error on insert",
+                //             error: err
+                //         })
+                //     })
                 response.send({
                     success: true
                 })
