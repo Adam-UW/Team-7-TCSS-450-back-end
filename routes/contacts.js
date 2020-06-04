@@ -116,9 +116,31 @@ router.post("/", (request, response, next) => {
             .then(result => {
                 if (result.rowCount == 1) {
                     //insertion success. Attach the message to the Response obj
-                    response.send({
-                        success: true
-                    })
+                    let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified) VALUES($1, $2, $3)`
+                    let values = [request.decoded.memberid, request.body.memberId, 1]
+                    pool.query(insert, values)
+                        .then(result => {
+                            if (result.rowCount == 1) {
+                                //insertion success. Attach the message to the Response obj
+
+                                response.send({
+                                    success: true
+                                })
+                            } else {
+                                response.status(400).send({
+                                    "message": "unknown error"
+                                })
+                            }
+
+                        }).catch(err => {
+                            response.status(400).send({
+                                message: "SQL Error on insert",
+                                error: err
+                            })
+                        })
+                    // response.send({
+                    //     success: true
+                    // })
                 } else {
                     response.status(400).send({
                         "message": "unknown error"
