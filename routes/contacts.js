@@ -77,7 +77,7 @@ router.post("/", (request, response, next) => {
     if (request.body.verified == 1) {
         console.log("updating");
         //updates the contact
-        let insert = `UPDATE Contacts SET verified=1 where (MemberID_A=$1 AND MemberID_B=$2) OR (MemberID_A=$2 AND MemberID_B=$1)`
+        let insert = `UPDATE Contacts SET verified=1 where (MemberID_A=$1 AND MemberID_B=$2) AND (MemberID_A=$2 AND MemberID_B=$1)`
         let values = [request.decoded.memberid, request.body.memberId]
         pool.query(insert, values)
             .then(result => {
