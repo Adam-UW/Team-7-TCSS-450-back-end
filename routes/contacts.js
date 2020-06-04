@@ -93,7 +93,7 @@ router.post("/", (request, response, next) => {
     } else {
         console.log("inserting");
         //add the contact
-        let insert = `INSERT INTO Contacts(MemberID_A, MemberID_B, verified) VALUES($1, $2, $3)`
+        let insert = `INSERT INTO Contacts(MemberID_B, MemberID_A, verified) VALUES($1, $2, $3)`
         let values = [request.decoded.memberid, request.body.memberId, request.body.verified]
         pool.query(insert, values)
             .then(result => {
