@@ -609,7 +609,7 @@ define({ "api": [
     "title": "Request add a user to a chat",
     "name": "PutChats",
     "group": "Chats",
-    "description": "<p>Adds the user associated with the required JWT.</p>",
+    "description": "<p>Adds list of members to chat</p>",
     "header": {
       "fields": {
         "Header": [
@@ -721,7 +721,7 @@ define({ "api": [
     "groupTitle": "Chats"
   },
   {
-    "type": "get",
+    "type": "delete",
     "url": "/contacts/contact/:memberId?",
     "title": "Request to delete contact",
     "name": "DeleteContact",
@@ -780,6 +780,61 @@ define({ "api": [
             "optional": false,
             "field": "message",
             "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
+    "url": "/contacts/all",
+    "title": "Request to get list of all people available",
+    "name": "GetAll",
+    "group": "Contacts",
+    "description": "<p>Request to get list of all people</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>List of contacts</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;member ID Not Found&quot;</p>"
           }
         ],
         "400: SQL Error": [
@@ -918,6 +973,92 @@ define({ "api": [
             "optional": false,
             "field": "contacts.userName",
             "description": "<p>The user name of the contact</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404: memberId Not Found": [
+          {
+            "group": "404: memberId Not Found",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Contact not found&quot;</p>"
+          }
+        ],
+        "400: Invalid Parameter": [
+          {
+            "group": "400: Invalid Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Malformed parameter. memberId must be a number&quot;</p>"
+          }
+        ],
+        "400: Missing Parameters": [
+          {
+            "group": "400: Missing Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;Missing required information&quot;</p>"
+          }
+        ],
+        "400: SQL Error": [
+          {
+            "group": "400: SQL Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>the reported SQL error details</p>"
+          }
+        ],
+        "400: JSON Error": [
+          {
+            "group": "400: JSON Error",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>&quot;malformed JSON in parameters&quot;</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/contacts.js",
+    "groupTitle": "Contacts"
+  },
+  {
+    "type": "get",
+    "url": "'getAll/:memberid?",
+    "title": "Request to get all Unfriend contacts",
+    "name": "GetContact",
+    "group": "Contacts",
+    "description": "<p>Request to get list of Unfriend contacts of a member</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "memberId",
+            "description": "<p>the contact to get info for</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "JSON",
+            "optional": false,
+            "field": "list",
+            "description": "<p>of unfriend contacts</p>"
           }
         ]
       }

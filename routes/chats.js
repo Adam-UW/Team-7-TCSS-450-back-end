@@ -385,11 +385,22 @@ router.delete("/:chatId?/:email?", (request, response, next) => {
 )
 
 
-// @Adam
-// TODO: NOT YET WORKING  some weird SQL Error sequelize-cli !!!!!
-
-// I need the quary for the list of chats to give me: A list of chatId's and chat names a given memeber is a part of 
-
+/**
+ * @api {get} /chats/:memberId?
+ * @apiName Get memberID
+ * @apiGroup Chats
+ * 
+ * @apiDescription  Gets a list of chat id's and chat names for a given member.
+ * 
+ * @apiParam {Number} memeberId the chat to delete the user from
+ * @apiSuccess {String} successif a person is a part of a chatId
+ * 
+ * @apiError (404: Chat Not Found) {String} message "chatID not found"
+ * 
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * 
+ * @apiUse JSONError
+ */
 router.get("/:memberId", (request, response, next) => {
     console.log('/chats/memberID called', request.params.memberId)
     //validate on missing or invalid (type) parameters
